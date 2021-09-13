@@ -1,108 +1,121 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {UserService} from "../user.service";
-import {Location} from "@angular/common";
-import {ConfirmationService} from "primeng/api";
-import {RxwebValidators} from "@rxweb/reactive-form-validators";
-import {User} from "../user";
+import {Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {UserService} from '../user.service';
+import { Location} from '@angular/common';
+import {ConfirmationService} from 'primeng/api';
+import {RxwebValidators} from '@rxweb/reactive-form-validators';
+import {User} from '../user';
+import {ActivatedRoute} from '@angular/router';
+
 interface Country {
-  name: string,
-  code: string
+  name: string;
 }
 @Component({
   selector: 'app-user-editor',
   templateUrl: './user-editor.component.html',
-  styleUrls: ['./user-editor.component.css']
+  styleUrls: ['./user-editor.component.css'],
+  providers: [ConfirmationService]
 })
-export class UserEditorComponent implements OnInit {
-
-  date: Date;
+export class UserEditorComponent implements OnInit{
+  user: User;
   selectedCountry: Country ;
   countries: Country[];
   form: FormGroup;
   genderStateOptions: any[];
-  constructor(private userService: UserService, private formBuilder: FormBuilder,  private location: Location, private confirmationService: ConfirmationService) {
+  selectedStatus: any;
+  userStatus: any[] = [{name: 'Done'}, {name: 'New' }, {name: 'In process'}];
+  private dateValue: Date;
+
+  constructor(private userService: UserService, private formBuilder: FormBuilder,  private location: Location, private confirmationService: ConfirmationService, private router: ActivatedRoute) {
     this.genderStateOptions = [{label: 'Female', value: 'Female'}, {label: 'Male', value: 'Male'}];
     this.countries = [
-      {name: 'Australia', code: 'AU'},
-      {name: 'Brazil', code: 'BR'},
-      {name: 'China', code: 'CN'},
-      {name: 'Egypt', code: 'EG'},
-      {name: 'France', code: 'FR'},
-      {name: 'Germany', code: 'DE'},
-      {name: 'India', code: 'IN'},
-      {name: 'Japan', code: 'JP'},
-      {name: 'Spain', code: 'ES'},
-      {name: 'United States', code: 'US'}
+      {name: 'Australia'},
+      {name: 'Brazil'},
+      {name: 'China'},
+      {name: 'Egypt'},
+      {name: 'France'},
+      {name: 'Germany'},
+      {name: 'India'},
+      {name: 'Japan'},
+      {name: 'Spain'},
+      {name: 'United States'}
     ];
   }
-  @Output()
-  onClose = new EventEmitter<boolean>();
+
   ngOnInit(): void {
     this.reactiveFormBiulder();
+    this.getUser();
+
   }
+
+
   reactiveFormBiulder(): void{
     this.form = this.formBuilder.group({
-      id: [],
+      id: [null],
       firstName: [null, RxwebValidators.required()],
       lastName: [null, RxwebValidators.required()],
       nationality: [null, RxwebValidators.required()],
       momsName: [null, RxwebValidators.required()],
-      country: [],
+      country: [null],
       registered: [],
       gender: [null, RxwebValidators.oneOf({matchValues: ['Female' , 'Male']})],
-      dateOfBirth:[],
-      number: [],
-      status:[null, RxwebValidators.oneOf({matchValues: ['Done' ,'New', 'In process']})]
+      dateOfBirth: [null],
+      number: [null],
+      status: [null, RxwebValidators.oneOf({matchValues: ['Done' , 'New' , 'In process']})]
     });
   }
-  /*
-    add(firstName: string, lastName: string, nationality: string, momsName: string, country:string, registered:boolean, gender: string): void {
-      firstName = firstName.trim();
-      lastName = lastName.trim();
-      nationality = nationality.trim();
-      momsName = momsName.trim();
-      country = country.trim();
-      gender = gender.trim();
-      if (!firstName && !lastName && !nationality && !momsName) { return; }
-      this.userService.addUser({ firstName, lastName, nationality, momsName, country , registered, gender} as User)
-        .subscribe(() => this.closeCreate());
-    }
 
-   */
-  add():void{
+  add(): void{
     if (this.form.valid) {
       this.userService.addUser(this.form.value as User)
         .subscribe();
     }
   }
-  confirm(event: Event) {
+
+  confirm(): void {
     this.confirmationService.confirm({
-      target: event.target,
-      message: 'Are you sure that you want to make a new user?',
+      message: 'Are you sure that you want to edit this user?',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        if(this.selectedCountry){
-          this.add();
+        if (this.form.valid){
+          this.save();
         }
-        else{
-          this.add();
-        }
-
       },
       reject: () => {
       }
     });
   }
 
-  getDogs(): void {
-    this.userService.getUsers()
-      .subscribe();
+  confirm2(): void {
+    this.confirmationService.confirm({
+      message: 'Do you want to leave without save?',
+      header: 'Leave Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        this.closeEditer();
+      },
+      reject: () => {
+      }
+    });
+  }
+  getUser(): void {
+    let id;
+    id = +this.router.snapshot.paramMap.get('id');
+    this.userService.getUser(id)
+      .subscribe(user => {
+        this.form.patchValue(user);
+        this.selectedStatus = user.status;
+      });
   }
 
-  closeNewUser(): void {
+  closeEditer(): void {
     this.location.back();
   }
-
+  save(): void {
+    if (this.form.value) {
+      this.userService.updateUser(this.form.value as User)
+        .subscribe(() => this.closeEditer() );
+    }
+  }
 
 }

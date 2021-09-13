@@ -12,7 +12,7 @@
     </span>
     <input class="p-mr-2 p-d-inline" id="fname" placeholder="First name" formControlName="firstName" pInputText #userFName/>
     <input class="p-mr-2 p-d-inline" id="lname" placeholder="Last name" formControlName="lastName" pInputText #userLName/>
-    <input class="p-mr-2 p-d-inline" id="nationality" placeholder="Nationality" formControlName="nationality" pInputText #userNationality/>
+    <p-multiSelect class="p-mr-2 p-d-inline" [options]="nationalities" formControlName="nationality" defaultLabel="Nationality" optionLabel="name" #userNationality></p-multiSelect>
     <input class="p-mr-2 p-d-inline" id="momsname" placeholder="Mom's name" formControlName="momsName" pInputText #userMomName/>
     <p-dropdown  [options]="countries" formControlName="country" placeholder="Country" optionLabel="name" optionValue="name" [showClear]="true"></p-dropdown>
     <p-calendar formControlName="dateOfBirth" dateFormat="yy.mm.dd"></p-calendar>
@@ -42,8 +42,7 @@
   </div>
   <div class="p-buttonset p-col-12">
     <button pButton pRipple label="Add new" icon="pi pi-check"
-            (click)="confirm();
-            userFName.value='';userLName.value=''; userMomName.value=''; userNationality.value='';"></button>
+            (click)="confirm()"></button>
     <button pButton pRipple label="Back" (click)="closeNewUser()"></button>
   </div>
 </div>

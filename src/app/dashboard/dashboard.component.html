@@ -1,3 +1,4 @@
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
 <h1>
   List of users
 </h1>
@@ -8,22 +9,26 @@
         <div class="p-toolbar-group-left">
           <p-button label="New" icon="pi pi-plus" (click)="createNewUser()"></p-button>
           <p-button label="Edit" icon="pi pi-pencil" (click)="editUser()"  ></p-button>
-          <p-button label="Delete" icon="pi pi-trash" (click)="delete()"></p-button>
-
+          <p-button (click)="delete()" icon="pi pi-trash" label="Delete"></p-button>
         </div>
       </p-toolbar>
     </div>
     <div class="p-col-12">
     <span class="p-col-12 p-float-label">
-        <input id="name"  type="text" pInputText #userName />
+      <input id="fname"  type="text" placeholder="First name" pInputText #userFName />
+      <input id="lname"  type="text" placeholder="Last name" pInputText #userLName />
+      <input id="nationality"  type="text" placeholder="Nationality" pInputText #userNat />
+      <input id="momname"  type="text" placeholder="Mom's name" pInputText #userMomName />
+      <input id="BD"  type="text" placeholder="Birth day" pInputText #userBD />
+      <input id="number"  type="text" placeholder="Number" pInputText #userNumber />
       </span>
-      <p-button label="Search" icon="pi pi-search" (click)="search(userName.value)"></p-button>
+      <p-button label="Search" icon="pi pi-search" (click)="search(userFName.value, userLName.value, userMomName.value, userNumber.value )"></p-button>
     </div>
     <div class="card p-col-12 ">
       <p-table [value]="filteredUsers" styleClass="p-datatable-striped" selectionMode="single" [(selection)]="selectedUser" responsiveLayout="scroll">
         <ng-template pTemplate="header">
           <tr>
-            <th pSortableColumn="firstName">First name <p-sortIcon field="firstName"></p-sortIcon></th>
+            <th pSortableColumn="firstName">First name<p-sortIcon field="firstName"></p-sortIcon></th>
             <th pSortableColumn="lastName">Last name <p-sortIcon field="lastName"></p-sortIcon></th>
             <th pSortableColumn="country">Country <p-sortIcon field="country"></p-sortIcon></th>
             <th pSortableColumn="nationality">Nationality <p-sortIcon field="nationality"></p-sortIcon></th>
@@ -40,7 +45,7 @@
             <td>{{user.firstName}}</td>
             <td>{{user.lastName}}</td>
             <td>{{user.country}}</td>
-            <td>{{user.nationality}}</td>
+            <td><ng-container *ngFor="let nat of user.nationality; let last = last;">{{nat.name}}<span *ngIf="!last">, </span></ng-container></td>
             <td>{{user.momsName}}</td>
             <td> <p-checkbox [(ngModel)]="user.registered"  binary="true" inputId="binary" (onChange)="saveChange(user)"></p-checkbox></td>
             <td>{{user.gender}}</td>

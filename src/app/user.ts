@@ -2,28 +2,31 @@ export interface User {
   id: number;
   firstName: string;
   lastName: string;
-  nationality: string;
+  nationality: NationalityList[];
   momsName: string;
   country?: string;
   registered?: boolean;
   gender?: 'Female' | 'Male' ;
-  dateOfBirth?: any;
+  dateOfBirth?: any[];
   number?: number;
   status?: 'Done' |'New'| 'In process';
 }
 
-export interface Nationality {
-  name: 'British'|'Hungarian'|'German';
+export interface NationalityList {
+  name: string;
 }
 
-export interface Country {
-  name: 'United Kingdom'|'Hungary'|'Germany',
+
+export interface CountryList {
+  name: string;
 }
 
-export interface Gender {
-  gender: 'Female' | 'Male' | 'Other';
+
+export interface GenderList {
+  label: string;
+  value: string;
 }
 
-export interface Status {
-  status: 'Done' |'New'| 'In process';
+export interface StatusList {
+  status: string;
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import {Observable, of} from "rxjs";
-import {Country, Nationality, User} from "./user";
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {Observable, of} from 'rxjs';
+import {CountryList, GenderList, NationalityList, User} from './user';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,9 @@ export class UserService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
   private usersUrl = 'api/users';  // URL to web api
+  private countryUrl = 'api/countryList';
+  private nationalityUrl = 'api/nationalityList';
+  private genderUrl = 'api/genderList';
   /*getDogs(): Observable<Dog[]> {
     const dogs = of(DOGS);
     return dogs;
@@ -19,7 +22,15 @@ export class UserService {
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(this.usersUrl);
   }
-
+  getCountries(): Observable<CountryList[]> {
+    return this.http.get<CountryList[]>(this.countryUrl);
+  }
+  getNationalities(): Observable<NationalityList[]> {
+    return this.http.get<NationalityList[]>(this.nationalityUrl);
+  }
+  getGenderList(): Observable<GenderList[]> {
+    return this.http.get<GenderList[]>(this.genderUrl);
+  }
   getUser(id: number): Observable<User> {
     const url = `${this.usersUrl}/${id}`;
     return this.http.get<User>(url);
@@ -40,4 +51,5 @@ export class UserService {
     const url = `${this.usersUrl}/${id}`;
     return this.http.delete<User>(url, this.httpOptions);
   }
+
 }

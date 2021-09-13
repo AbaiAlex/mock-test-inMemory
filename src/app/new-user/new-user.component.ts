@@ -1,13 +1,13 @@
 import {Component, OnInit, Output, EventEmitter} from '@angular/core';
-import {UserService} from "../user.service";
-import { User} from "../user";
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {RxwebValidators} from "@rxweb/reactive-form-validators";
+import {UserService} from '../user.service';
+import {CountryList, GenderList, NationalityList, User} from '../user';
+import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import {RxwebValidators} from '@rxweb/reactive-form-validators';
 import { Location } from '@angular/common';
-import {ConfirmationService} from "primeng/api";
+import {ConfirmationService} from 'primeng/api';
 
 interface Country {
-  name: string
+  name: string;
 }
 
 @Component({
@@ -18,89 +18,73 @@ interface Country {
 })
 
 export class NewUserComponent implements OnInit {
-  date: Date;
+
   selectedCountry: Country;
-  countries: Country[];
+  countries: CountryList[] = [];
+  nationalities: NationalityList[] = [];
   form: FormGroup;
-  genderStateOptions: any[];
+  genderStateOptions: GenderList[] = [];
+  nationalityFormArray: FormArray;
   constructor(private userService: UserService, private formBuilder: FormBuilder,  private location: Location, private confirmationService: ConfirmationService) {
-    this.genderStateOptions = [{label: 'Female', value: 'Female'}, {label: 'Male', value: 'Male'}];
-    this.countries = [
-      {name: 'Australia'},
-      {name: 'Brazil'},
-      {name: 'China'},
-      {name: 'Egypt'},
-      {name: 'France'},
-      {name: 'Germany'},
-      {name: 'India'},
-      {name: 'Japan'},
-      {name: 'Spain'},
-      {name: 'United States'}
-    ];
   }
-  @Output()
-  onClose = new EventEmitter<boolean>();
   ngOnInit(): void {
     this.reactiveFormBiulder();
-    //this.selectedCountry = {name: ''};
+    this.getCountries();
+    this.getNationalities();
+    this.getGenders();
   }
   reactiveFormBiulder(): void{
+    this.nationalityFormArray = this.formBuilder.array([]);
     this.form = this.formBuilder.group({
       id: [],
       firstName: [null, RxwebValidators.required()],
       lastName: [null, RxwebValidators.required()],
-      nationality: [null, RxwebValidators.required()],
+      nationality: [this.nationalityFormArray, RxwebValidators.required()],
       momsName: [null, RxwebValidators.required()],
-      country: [],
-      registered: [],
-      gender: [null, RxwebValidators.oneOf({matchValues: ['Female' , 'Male']})],
-      dateOfBirth:[],
-      number: [],
-      status:[null, RxwebValidators.oneOf({matchValues: ['Done' ,'New', 'In process']})]
+      country: [null],
+      registered: [null],
+      gender: [null],
+      dateOfBirth: [null],
+      number: [null],
+      status: [null]
     });
   }
-/*
-  add(firstName: string, lastName: string, nationality: string, momsName: string, country:string, registered:boolean, gender: string): void {
-    firstName = firstName.trim();
-    lastName = lastName.trim();
-    nationality = nationality.trim();
-    momsName = momsName.trim();
-    country = country.trim();
-    gender = gender.trim();
-    if (!firstName && !lastName && !nationality && !momsName) { return; }
-    this.userService.addUser({ firstName, lastName, nationality, momsName, country , registered, gender} as User)
-      .subscribe(() => this.closeCreate());
-  }
 
- */
-  add():void{
+  add(): void{
     if (this.form.valid) {
       this.userService.addUser(this.form.value as User)
         .subscribe(() => this.closeNewUser());
     }
   }
-  confirm() {
-    this.confirmationService.confirm({
-      message: 'Are you sure that you want to make this new user?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-       this.add();
-      },
-      reject: () => {
-
-      }
-    });
-  }
-
-  getDogs(): void {
-    this.userService.getUsers()
-      .subscribe();
+  confirm(): void {
+    if (this.form.valid){
+      this.confirmationService.confirm({
+        message: 'Are you sure that you want to make this new user?',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.add();
+        },
+        reject: () => {
+        }
+      });
+    }
   }
 
   closeNewUser(): void {
     this.location.back();
   }
 
-
+  getCountries(): void {
+    this.userService.getCountries()
+      .subscribe(countries => this.countries = countries);
+  }
+  getNationalities(): void {
+    this.userService.getNationalities()
+      .subscribe(nat => this.nationalities = nat);
+  }
+  getGenders(): void {
+    this.userService.getGenderList()
+      .subscribe(gen => this.genderStateOptions = gen);
+  }
 }
