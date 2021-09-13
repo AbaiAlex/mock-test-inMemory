@@ -9,8 +9,8 @@ export class InMemoryDataService implements InMemoryDbService {
   createDb() {
     const users: User[] = [
       { id: 1, firstName: 'Példa', lastName: 'Elek', nationality: [{name: 'Hungarian'}], momsName: 'Példa Béláné', gender: 'Male' , registered: true},
-      { id: 2, firstName: 'Példa', lastName: 'Áron', nationality: [{name: 'Hungarian'}, { name: 'German'}], momsName: 'Példa Anita' },
-      { id: 3, firstName: 'Példa', lastName: 'Viktória', nationality: [{name: 'British'}], momsName: 'Példa Áronné' }
+      { id: 2, firstName: 'Példa', lastName: 'Áron', nationality: [{name: 'Hungarian'}, { name: 'German'}], momsName: 'Példa Anita', registered: false },
+      { id: 3, firstName: 'Példa', lastName: 'Viktória', nationality: [{name: 'British'}], momsName: 'Példa Áronné', registered: false }
     ];
     const countryList: CountryList[] = [
       {name: 'Australia'},

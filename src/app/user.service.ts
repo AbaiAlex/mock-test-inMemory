@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Observable, of} from 'rxjs';
-import {CountryList, GenderList, NationalityList, User} from './user';
+import {CountryList, GenderList, NationalityList, StatusList, User} from './user';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable({
@@ -15,6 +15,7 @@ export class UserService {
   private countryUrl = 'api/countryList';
   private nationalityUrl = 'api/nationalityList';
   private genderUrl = 'api/genderList';
+  private statusUrl = 'api/statusList';
   /*getDogs(): Observable<Dog[]> {
     const dogs = of(DOGS);
     return dogs;
@@ -30,6 +31,9 @@ export class UserService {
   }
   getGenderList(): Observable<GenderList[]> {
     return this.http.get<GenderList[]>(this.genderUrl);
+  }
+  getStatusState(): Observable<StatusList[]> {
+    return this.http.get<StatusList[]>(this.statusUrl);
   }
   getUser(id: number): Observable<User> {
     const url = `${this.usersUrl}/${id}`;

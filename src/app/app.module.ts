@@ -25,6 +25,8 @@ import {ConfirmPopupModule} from 'primeng/confirmpopup';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {MultiSelectModule} from 'primeng/multiselect';
+import {AutoCompleteModule} from 'primeng/autocomplete';
+import {TriStateCheckboxModule} from 'primeng/tristatecheckbox';
 
 @NgModule({
   declarations: [
@@ -38,11 +40,13 @@ import {MultiSelectModule} from 'primeng/multiselect';
     CheckboxModule,
     ConfirmDialogModule,
     BrowserAnimationsModule,
+    TriStateCheckboxModule,
     NoopAnimationsModule,
     RadioButtonModule,
     SelectButtonModule,
     FormsModule,
     ConfirmPopupModule,
+    AutoCompleteModule,
     DropdownModule,
     InputTextModule,
     DataViewModule,

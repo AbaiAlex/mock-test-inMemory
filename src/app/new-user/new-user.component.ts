@@ -6,9 +6,7 @@ import {RxwebValidators} from '@rxweb/reactive-form-validators';
 import { Location } from '@angular/common';
 import {ConfirmationService} from 'primeng/api';
 
-interface Country {
-  name: string;
-}
+
 
 @Component({
   selector: 'app-new-user',
@@ -19,7 +17,7 @@ interface Country {
 
 export class NewUserComponent implements OnInit {
 
-  selectedCountry: Country;
+  selectedCountry: CountryList;
   countries: CountryList[] = [];
   nationalities: NationalityList[] = [];
   form: FormGroup;
@@ -39,10 +37,10 @@ export class NewUserComponent implements OnInit {
       id: [],
       firstName: [null, RxwebValidators.required()],
       lastName: [null, RxwebValidators.required()],
-      nationality: [this.nationalityFormArray, RxwebValidators.required()],
+      nationality: this.nationalityFormArray,
       momsName: [null, RxwebValidators.required()],
       country: [null],
-      registered: [null],
+      registered: [false],
       gender: [null],
       dateOfBirth: [null],
       number: [null],
@@ -87,4 +85,12 @@ export class NewUserComponent implements OnInit {
     this.userService.getGenderList()
       .subscribe(gen => this.genderStateOptions = gen);
   }
+
+  private getNationalityFormGroup(nationality: NationalityList): FormGroup {
+    return this.formBuilder.group({
+    name: [nationality.name]
+    });
+  }
+
+
 }

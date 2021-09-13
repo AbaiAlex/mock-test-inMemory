@@ -13,16 +13,23 @@
         </div>
       </p-toolbar>
     </div>
+
     <div class="p-col-12">
-    <span class="p-col-12 p-float-label">
-      <input id="fname"  type="text" placeholder="First name" pInputText #userFName />
-      <input id="lname"  type="text" placeholder="Last name" pInputText #userLName />
-      <input id="nationality"  type="text" placeholder="Nationality" pInputText #userNat />
-      <input id="momname"  type="text" placeholder="Mom's name" pInputText #userMomName />
-      <input id="BD"  type="text" placeholder="Birth day" pInputText #userBD />
-      <input id="number"  type="text" placeholder="Number" pInputText #userNumber />
-      </span>
-      <p-button label="Search" icon="pi pi-search" (click)="search(userFName.value, userLName.value, userMomName.value, userNumber.value )"></p-button>
+      <input class="p-mr-2 p-d-inline" id="fname"  type="text" placeholder="First name" pInputText #userFName />
+      <input class="p-mr-2 p-d-inline" id="lname"  type="text" placeholder="Last name" pInputText #userLName />
+      <input class="p-mr-2 p-d-inline"  id="nationality"  type="text" placeholder="Nationality" pInputText #userNat />
+      <input class="p-mr-2 p-d-inline"  id="momname"  type="text" placeholder="Mom's name" pInputText #userMomName />
+      <input class="p-mr-2 p-d-inline" id="BD"  type="text" placeholder="Birth day" pInputText #userBD />
+      <input class="p-mr-2 "  id="number"  type="text" placeholder="Number" pInputText #userNumber />
+    </div>
+      <div class="p-col-12">
+      <p-dropdown class="p-mr-2 p-d-inline" [options]="statusStateOptions" [(ngModel)]="selectedState" placeholder="Status" optionLabel="status" [showClear]="true" ></p-dropdown>
+      <p-dropdown class="p-mr-2 p-d-inline" [options]="genderStateOptions" [(ngModel)]="slelectedGender" placeholder="Gender" optionLabel="label" [showClear]="true" ></p-dropdown>
+      <p-dropdown class="p-mr-2 p-d-inline" [options]="countries" [(ngModel)]="selectedCountry" placeholder="Country" optionLabel="name" [showClear]="true" ></p-dropdown>
+      <p-triStateCheckbox class="p-col-2" [(ngModel)]="selectedRegisteredState"></p-triStateCheckbox>
+    </div>
+  <div class="p-col-12">
+      <p-button label="Search" icon="pi pi-search" (click)="search(userFName.value, userLName.value, userMomName.value, userNumber.value, selectedCountry, slelectedGender, selectedState,selectedRegisteredState, userNat.value )"></p-button>
     </div>
     <div class="card p-col-12 ">
       <p-table [value]="filteredUsers" styleClass="p-datatable-striped" selectionMode="single" [(selection)]="selectedUser" responsiveLayout="scroll">
@@ -47,7 +54,9 @@
             <td>{{user.country}}</td>
             <td><ng-container *ngFor="let nat of user.nationality; let last = last;">{{nat.name}}<span *ngIf="!last">, </span></ng-container></td>
             <td>{{user.momsName}}</td>
-            <td> <p-checkbox [(ngModel)]="user.registered"  binary="true" inputId="binary" (onChange)="saveChange(user)"></p-checkbox></td>
+            <td>
+                <p-checkbox [(ngModel)]="user.registered"  binary="true" inputId="binary" (onChange)="saveChange(user)"></p-checkbox>
+            </td>
             <td>{{user.gender}}</td>
             <td>{{user.dateOfBirth| date:'YYYY/MM/d'}}</td>
             <td>{{user.number}}</td>

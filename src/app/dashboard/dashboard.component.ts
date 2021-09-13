@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from '../user.service';
-import {User, CountryList, GenderList, NationalityList} from '../user';
+import {User, CountryList, GenderList, NationalityList, StatusList} from '../user';
 import {Router} from '@angular/router';
 import {ConfirmationService} from 'primeng/api';
 
@@ -15,9 +15,14 @@ export class DashboardComponent implements OnInit {
   filteredUsers: User[];
   selectedUser: User;
   countries: CountryList[] = [];
+  selectedCountry: CountryList;
   nationalities: NationalityList[] = [];
   genderStateOptions: GenderList[] = [];
-
+  slelectedGender: GenderList;
+  statusStateOptions: StatusList[] = [];
+  selectedState: StatusList;
+  selectedRegisteredState = null;
+  checked: boolean = false;
   constructor(private userService: UserService, private router: Router, private confirmationService: ConfirmationService) {
   }
 
@@ -26,12 +31,14 @@ export class DashboardComponent implements OnInit {
     this.getGenders();
     this.getNationalities();
     this.getCountries();
+    this.getStatus();
   }
 
   getUsers(): void {
     this.userService.getUsers()
       .subscribe(users => {this.users = users;
-                           this.filteredUsers = users; });
+                           this.filteredUsers = users;
+      });
 
   }
 
@@ -70,12 +77,29 @@ export class DashboardComponent implements OnInit {
     console.log('Data refreshed');
   }
 
-  search(FName: string, LName: string, MomName: string, Numb: string): void {
+  search(FName: string, LName: string, MomName: string, Numb: string, Country: CountryList, Gender: GenderList, Status: StatusList, Registered: any, Nationality: string): void {
     this.filteredUsers = this.users;
     this.filteredUsers = this.filteredUsers.filter(h => h.firstName.toLowerCase().indexOf(FName.toLowerCase()) !== -1);
     this.filteredUsers = this.filteredUsers.filter(h => h.lastName.toLowerCase().indexOf(LName.toLowerCase()) !== -1);
+    //this.filteredUsers = this.filteredUsers.filter(h => h.nationality.filter(h => h.name.toLowerCase().indexOf(Nationality.toLowerCase())!== -1) );
     this.filteredUsers = this.filteredUsers.filter(h => h.momsName.toLowerCase().indexOf(MomName.toLowerCase()) !== -1);
-    this.filteredUsers = this.filteredUsers.filter(h => String(h.number).indexOf(Numb) !== -1 );
+    this.filteredUsers = this.filteredUsers.filter(h => String(h.number).indexOf(Numb) !== -1);
+    if (Country) {
+      this.filteredUsers = this.filteredUsers.filter(h => String(h.country) === String(Country.name));
+    }
+    if (Gender) {
+      this.filteredUsers = this.filteredUsers.filter(h => String(h.gender) === String(Gender.value));
+    }
+    if (Status) {
+      this.filteredUsers = this.filteredUsers.filter(h => String(h.status) === String(Status.status));
+    }
+    if (Registered !== null) {
+      this.filteredUsers = this.filteredUsers.filter(h => String(h.registered) === String(Registered));
+    }
+
+
+
+
   }
 
   getCountries(): void {
@@ -90,6 +114,10 @@ export class DashboardComponent implements OnInit {
     this.userService.getGenderList()
       .subscribe(gen => this.genderStateOptions = gen);
   }
+  getStatus(): void{
+    this.userService.getStatusState()
+      .subscribe(stat => this.statusStateOptions = stat);
+  }
+
+
 }
-
-
