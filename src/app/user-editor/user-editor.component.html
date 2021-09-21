@@ -1,26 +1,20 @@
 
 <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
-<div class="p-grid">
-  <span class="p-col-12">
-    <h2>Edit user</h2>
-    <p>{{form.controls.id.value}}</p>
-  </span>
-  <div class="p-grid"  [formGroup]="form">
-     <span class="p-col-2">
+<div class="p-grid box">
 
-    </span>
+    <h2 class="p-col-12 toolbar">
+      Edit user
+    </h2>
 
-    <input class="p-mr-2 p-d-inline" id="fname" placeholder="First name" formControlName="firstName" pInputText #userFName/>
-    <input class="p-mr-2 p-d-inline" id="lname" placeholder="Last name" formControlName="lastName" pInputText #userLName/>
-    <input class="p-mr-2 p-d-inline" id="nationality" placeholder="Nationality" formControlName="nationality" pInputText #userNationality/>
-    <input class="p-mr-2 p-d-inline" id="momsname" placeholder="Mom's name" formControlName="momsName" pInputText #userMomName/>
-    <p-dropdown  [options]="countries" formControlName="country" placeholder="Country" optionLabel="name" optionValue="name" [showClear]="true"></p-dropdown>
-    <p-calendar formControlName="dateOfBirth"></p-calendar>
-    <input class="p-mr-2 p-d-inline" id="number" placeholder="Number" formControlName="number"  pInputText #Number/>
-
-    <span class="p-col-2">
-
-    </span>
+  <div class="p-col-12 panels"  [formGroup]="form">
+    <input class="p-mr-2 p-d-inline" id="fname" placeholder="First name" formControlName="firstName" pInputText />
+    <input class="p-mr-2 p-d-inline" id="lname" placeholder="Last name" formControlName="lastName" pInputText />
+    <input class="p-mr-2 p-d-inline" id="nationality" placeholder="Nationality" formControlName="nationality" pInputText />
+    <input class="p-mr-2 p-d-inline" id="momsname" placeholder="Mom's name" formControlName="momsName" pInputText />
+    <p-dropdown class="p-mr-2 p-d-inline" [options]="countries" formControlName="country" placeholder="Country" optionLabel="name" optionValue="name" [showClear]="true"></p-dropdown>
+    <p-calendar class="p-mr-2 p-d-inline" formControlName="dateOfBirth"></p-calendar>
+    <input class="p-mr-2 p-d-inline" id="number" placeholder="Number" formControlName="number"  pInputText />
+    <span class="p-grid">
     <div class="p-col-2 p-field">
       <h3>
         Gender
@@ -28,7 +22,7 @@
       <p-selectButton [options]="genderStateOptions" formControlName="gender" optionLabel="label" optionValue="value"></p-selectButton>
     </div>
 
-    <div class="p-col-2">
+    <div class="p-col-3">
       <h3 >
         Status
       </h3>
@@ -40,12 +34,13 @@
       <p-radioButton formControlName="status" name="status" [value]="'In process'" inputId="status3" ></p-radioButton>
       In process
     </div>
+    </span>
+    <div class="p-buttonset p-col-12">
 
+      <button pButton pRipple label="Edit user" icon="pi pi-check"
+              (click)="confirm()"></button>
+      <button pButton pRipple label="Back" (click)="confirm2()" icon="pi pi-arrow-circle-left"></button>
+    </div>
   </div>
-  <div class="p-buttonset p-col-12">
 
-    <button pButton pRipple label="Edit user" icon="pi pi-check"
-            (click)="confirm()"></button>
-    <button pButton pRipple label="Back" (click)="confirm2()"></button>
-  </div>
 </div>

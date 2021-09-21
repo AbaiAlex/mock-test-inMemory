@@ -1,25 +1,22 @@
 <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
-<h1>
-  List of users
-</h1>
-<div class="p-grid ">
 
-    <div class="p-col-12">
-      <p-toolbar>
-        <div class="p-toolbar-group-left">
+<div class="p-grid box">
+  <h1>
+    List of users
+  </h1>
+    <div class="p-col-12 Toolbar">
           <p-button label="New" icon="pi pi-plus" (click)="createNewUser()"></p-button>
-          <p-button label="Edit" icon="pi pi-pencil" (click)="editUser()"  ></p-button>
-          <p-button (click)="delete()" icon="pi pi-trash" label="Delete"></p-button>
-        </div>
-      </p-toolbar>
+          <p-button label="Edit" icon="pi pi-pencil" (click)="editUser()" ></p-button>
+          <p-button  icon="pi pi-trash" label="Delete" (click)="delete()"></p-button>
     </div>
-
+<div class="Search">
     <div class="p-col-12">
       <input class="p-mr-2 p-d-inline" id="fname"  type="text" placeholder="First name" pInputText #userFName />
       <input class="p-mr-2 p-d-inline" id="lname"  type="text" placeholder="Last name" pInputText #userLName />
       <input class="p-mr-2 p-d-inline"  id="nationality"  type="text" placeholder="Nationality" pInputText #userNat />
       <input class="p-mr-2 p-d-inline"  id="momname"  type="text" placeholder="Mom's name" pInputText #userMomName />
-      <input class="p-mr-2 p-d-inline" id="BD"  type="text" placeholder="Birth day" pInputText #userBD />
+      <!--input class="p-mr-2 p-d-inline" id="BD"  type="text" placeholder="Birth day" pInputText #userBD /-->
+      <p-calendar class="p-mr-2 p-d-inline" [(ngModel)]="selectedBirthDay" #userBD></p-calendar>
       <input class="p-mr-2 "  id="number"  type="text" placeholder="Number" pInputText #userNumber />
     </div>
       <div class="p-col-12">
@@ -29,10 +26,11 @@
       <p-triStateCheckbox class="p-col-2" [(ngModel)]="selectedRegisteredState"></p-triStateCheckbox>
     </div>
   <div class="p-col-12">
-      <p-button label="Search" icon="pi pi-search" (click)="search(userFName.value, userLName.value, userMomName.value, userNumber.value, selectedCountry, slelectedGender, selectedState,selectedRegisteredState, userNat.value )"></p-button>
+      <p-button label="Search" icon="pi pi-search" (click)="search(userFName.value, userLName.value, userMomName.value, userNumber.value, selectedCountry, slelectedGender, selectedState,selectedRegisteredState, userNat.value, userBD.value )"></p-button>
     </div>
+</div>
     <div class="card p-col-12 ">
-      <p-table [value]="filteredUsers" styleClass="p-datatable-striped" selectionMode="single" [(selection)]="selectedUser" responsiveLayout="scroll">
+      <p-table [value]="filteredUsers"  styleClass="p-datatable-striped" selectionMode="single" [(selection)]="selectedUser" responsiveLayout="scroll">
         <ng-template pTemplate="header">
           <tr>
             <th pSortableColumn="firstName">First name<p-sortIcon field="firstName"></p-sortIcon></th>

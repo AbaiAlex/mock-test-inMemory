@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit {
   selectedState: StatusList;
   selectedRegisteredState = null;
   checked: boolean = false;
+  selectedBirthDay: any;
   constructor(private userService: UserService, private router: Router, private confirmationService: ConfirmationService) {
   }
 
@@ -77,7 +78,7 @@ export class DashboardComponent implements OnInit {
     console.log('Data refreshed');
   }
 
-  search(FName: string, LName: string, MomName: string, Numb: string, Country: CountryList, Gender: GenderList, Status: StatusList, Registered: any, Nationality: string): void {
+  search(FName: string, LName: string, MomName: string, Numb: string, Country: CountryList, Gender: GenderList, Status: StatusList, Registered: any, Nationality: string, BirthDay: any): void {
     this.filteredUsers = this.users;
     this.filteredUsers = this.filteredUsers.filter(h => h.firstName.toLowerCase().indexOf(FName.toLowerCase()) !== -1);
     this.filteredUsers = this.filteredUsers.filter(h => h.lastName.toLowerCase().indexOf(LName.toLowerCase()) !== -1);
@@ -96,12 +97,63 @@ export class DashboardComponent implements OnInit {
     if (Registered !== null) {
       this.filteredUsers = this.filteredUsers.filter(h => String(h.registered) === String(Registered));
     }
+    if(BirthDay!==null){
+      BirthDay = this.selectedBirthDay.toString() == '' ? "" : this.trimDate(this.selectedBirthDay.toString());
+      this.filteredUsers = this.filteredUsers.filter(h => h.dateOfBirth === BirthDay);
+
+    }
+
 
 
 
 
   }
+  private getMonth(dateInStr: string) {
+    switch(dateInStr.substr(4,3)) {
+      case "Jan": {
+        return "01";
+      }
+      case "Feb": {
+        return "02";
+      }
+      case "Mar": {
+        return "03";
+      }
+      case "Apr": {
+        return "04";
+      }
+      case "May": {
+        return "05";
+      }
+      case "Jun": {
+        return "06";
+      }
+      case "Jul": {
+        return "07";
+      }
+      case "Aug": {
+        return "08";
+      }
+      case "Sep": {
+        return "09";
+      }
+      case "Oct": {
+        return "10";
+      }
+      case "Nov": {
+        return "11";
+      }
 
+      default: {
+        return '12'
+      }
+    }
+  }
+  private trimDate(dateInStr: string) {
+    let okDate: string;
+    okDate = this.getMonth(dateInStr) + '/' + dateInStr.substr(8, 2) + '/' + dateInStr.substr(11,4)
+    return okDate;
+  }
   getCountries(): void {
     this.userService.getCountries()
       .subscribe(countries => this.countries = countries);

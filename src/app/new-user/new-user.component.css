@@ -1,0 +1,26 @@
+.box{
+  margin-left: 100px;
+  margin-right: 100px;
+
+}
+.panels{
+  background-color: #829EBF;
+  width: 100%;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 25px;
+
+}
+h2{
+  margin-bottom: 0px;
+}
+.p-mr-2{
+  background-color: #829EBF;
+}
+.toolbar {
+  background-color: #B7D4EE;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 25px;
+  width: 100%;
+}

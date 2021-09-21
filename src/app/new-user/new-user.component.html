@@ -1,49 +1,43 @@
-
-
 <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
-<div class="p-grid">
-  <span class="p-col-12">
-    <h2>Add a new user</h2>
-  </span>
+<div class="p-grid box">
+  <h2 class="p-col-12 toolbar">
+    Add a new user
+  </h2>
 
-  <div class="p-grid" [formGroup]="form">
-     <span class="p-col-2">
-
-    </span>
-    <input class="p-mr-2 p-d-inline" id="fname" placeholder="First name" formControlName="firstName" pInputText #userFName/>
-    <input class="p-mr-2 p-d-inline" id="lname" placeholder="Last name" formControlName="lastName" pInputText #userLName/>
+  <div class="p-col-12 panels" [formGroup]="form">
+    <input class="p-mr-2 p-d-inline" id="fname" placeholder="First name" formControlName="firstName" pInputText/>
+    <input class="p-mr-2 p-d-inline" id="lname" placeholder="Last name" formControlName="lastName" pInputText />
       <!--p-multiSelect class="p-mr-2 p-d-inline" [options]="nationalities" formControlName="nationality" defaultLabel="Nationality" optionLabel="name"  #userNationality></p-multiSelect-->
-    <input class="p-mr-2 p-d-inline" id="momsname" placeholder="Mom's name" formControlName="momsName" pInputText #userMomName/>
-    <p-dropdown  [options]="countries" formControlName="country" placeholder="Country" optionLabel="name" optionValue="name" [showClear]="true"></p-dropdown>
-    <p-calendar formControlName="dateOfBirth"></p-calendar>
-    <input class="p-mr-2 p-d-inline" id="number" placeholder="Number" formControlName="number"  pInputText #Number/>
-    <span class="p-col-2">
+    <input class="p-mr-2 p-d-inline" id="momsname" placeholder="Mom's name" formControlName="momsName" pInputText />
+    <p-dropdown class="p-mr-2 p-d-inline"  [options]="countries" formControlName="country" placeholder="Country" optionLabel="name" optionValue="name" [showClear]="true"></p-dropdown>
+    <p-calendar class="p-mr-2 p-d-inline" formControlName="dateOfBirth"></p-calendar>
+    <input class="p-mr-2 p-d-inline" id="number" placeholder="Number" formControlName="number"  pInputText />
+    <span class="p-grid">
+        <div class="p-col-2">
+          <h3>
+            Gender
+          </h3>
+          <p-selectButton [options]="genderStateOptions" formControlName="gender" optionLabel="label" optionValue="value"></p-selectButton>
+        </div>
 
+        <div class="p-col-3">
+          <h3 >
+          Status
+          </h3>
+          <p-radioButton formControlName="status" name="status" value="Done" inputId="status1"></p-radioButton>
+          Done
+          <p-radioButton formControlName="status" name="status" value="New" inputId="status2"></p-radioButton>
+          New
+          <p-radioButton formControlName="status" name="status" value="In process" inputId="status3"></p-radioButton>
+          In process
+        </div>
     </span>
-    <div class="p-col-2 p-field">
-      <h3>
-        Gender
-      </h3>
-      <p-selectButton [options]="genderStateOptions" formControlName="gender" optionLabel="label" optionValue="value"></p-selectButton>
+    <div class="p-buttonset p-col-12">
+      <button pButton pRipple label="Add new" icon="pi pi-check"
+              (click)="confirm()"></button>
+      <button pButton pRipple label="Back" icon="pi pi-arrow-circle-left" (click)="closeNewUser()"></button>
     </div>
-
-    <div class="p-col-2">
-      <h3 >
-      Status
-      </h3>
-      <p-radioButton formControlName="status" name="status" value="Done" inputId="status1"></p-radioButton>
-      Done
-      <p-radioButton formControlName="status" name="status" value="New" inputId="status2"></p-radioButton>
-      New
-      <p-radioButton formControlName="status" name="status" value="In process" inputId="status3"></p-radioButton>
-      In process
-    </div>
-
   </div>
-  <div class="p-buttonset p-col-12">
-    <button pButton pRipple label="Add new" icon="pi pi-check"
-            (click)="confirm()"></button>
-    <button pButton pRipple label="Back" (click)="closeNewUser()"></button>
-  </div>
+
 </div>
-<!--(click)="add(userFName.value, userLName.value, userNationality.value, userMomName.value, country.value, registered.value, gender.value, ); -->
+

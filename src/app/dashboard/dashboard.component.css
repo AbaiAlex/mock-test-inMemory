@@ -4,3 +4,26 @@ p-button {
 input {
   margin-right: 30px;
 }
+.box{
+  margin-left: 100px;
+  margin-right: 100px;
+}
+.Toolbar {
+  background-color: #B7D4EE;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 25px;
+  width: 100%;
+}
+
+.Search {
+  background-color: #829EBF;
+  width: 100%;
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 25px;
+}
+.p-mr-2{
+   background-color: #829EBF;
+  color: white;
+ }
