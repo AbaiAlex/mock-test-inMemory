@@ -25,8 +25,10 @@ export class UserEditorComponent implements OnInit{
   selectedStatus: any;
   userStatus: any[] = [{name: 'Done'}, {name: 'New' }, {name: 'In process'}];
   private dateValue: Date;
+  userBDate:  Date;
 
   constructor(private userService: UserService, private formBuilder: FormBuilder,  private location: Location, private confirmationService: ConfirmationService, private router: ActivatedRoute) {
+
     this.genderStateOptions = [{label: 'Female', value: 'Female'}, {label: 'Male', value: 'Male'}];
     this.countries = [
       {name: 'Australia'},
@@ -40,11 +42,13 @@ export class UserEditorComponent implements OnInit{
       {name: 'Spain'},
       {name: 'United States'}
     ];
+
   }
 
   ngOnInit(): void {
     this.reactiveFormBiulder();
     this.getUser();
+    this.getCountries();
 
   }
 
@@ -59,7 +63,7 @@ export class UserEditorComponent implements OnInit{
       country: [null],
       registered: [],
       gender: [null, RxwebValidators.oneOf({matchValues: ['Female' , 'Male']})],
-      dateOfBirth: [null],
+      dateOfBirth: [''],
       number: [null],
       status: [null, RxwebValidators.oneOf({matchValues: ['Done' , 'New' , 'In process']})]
     });
@@ -112,10 +116,69 @@ export class UserEditorComponent implements OnInit{
     this.location.back();
   }
   save(): void {
-    if (this.form.value) {
-      this.userService.updateUser(this.form.value as User)
-        .subscribe(() => this.closeEditer() );
+    if (this.isChanged() && this.isDateChanged()) {
+      this.form.patchValue({dateOfBirth: this.form.controls['dateOfBirth'].value.toString() == '' ? "" : this.trimDate(this.form.controls['dateOfBirth'].value.toString()) as unknown as Date});
     }
+    this.userService.updateUser(this.form.value as User)
+      .subscribe(() => this.closeEditer() );
+  }
+
+  private isChanged() {
+    return this.form.dirty;
+  }
+  private isDateChanged() {
+    return this.form.controls["dateOfBirth"].dirty;
+  }
+
+  private getMonth(dateInStr: string) {
+    switch(dateInStr.substr(4,3)) {
+      case "Jan": {
+        return "01";
+      }
+      case "Feb": {
+        return "02";
+      }
+      case "Mar": {
+        return "03";
+      }
+      case "Apr": {
+        return "04";
+      }
+      case "May": {
+        return "05";
+      }
+      case "Jun": {
+        return "06";
+      }
+      case "Jul": {
+        return "07";
+      }
+      case "Aug": {
+        return "08";
+      }
+      case "Sep": {
+        return "09";
+      }
+      case "Oct": {
+        return "10";
+      }
+      case "Nov": {
+        return "11";
+      }
+
+      default: {
+        return '12'
+      }
+    }
+  }
+  private trimDate(dateInStr: string) {
+    let okDate: string;
+    okDate = this.getMonth(dateInStr) + '/' + dateInStr.substr(8, 2) + '/' + dateInStr.substr(11,4)
+    return okDate;
+  }
+  getCountries(): void {
+    this.userService.getCountries()
+      .subscribe(countries => this.countries = countries);
   }
 
 }

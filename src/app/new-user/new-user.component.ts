@@ -20,9 +20,11 @@ export class NewUserComponent implements OnInit {
   selectedCountry: CountryList;
   countries: CountryList[] = [];
   nationalities: NationalityList[] = [];
+  selectedNationalityes: NationalityList []= [];
   form: FormGroup;
   genderStateOptions: GenderList[] = [];
   nationalityFormArray: FormArray;
+  private natId: number;
   constructor(private userService: UserService, private formBuilder: FormBuilder,  private location: Location, private confirmationService: ConfirmationService) {
   }
   ngOnInit(): void {
@@ -32,7 +34,7 @@ export class NewUserComponent implements OnInit {
     this.getGenders();
   }
   reactiveFormBiulder(): void{
-    this.nationalityFormArray = this.formBuilder.array([]);
+    this.nationalityFormArray = this.formBuilder.array([this.formBuilder.group({name: ''})]);
     this.form = this.formBuilder.group({
       id: [],
       firstName: [null, RxwebValidators.required()],
@@ -42,7 +44,7 @@ export class NewUserComponent implements OnInit {
       country: [null],
       registered: [false],
       gender: [null],
-      dateOfBirth: [null],
+      dateOfBirth: [''],
       number: [null],
       status: [null]
     });
@@ -50,6 +52,7 @@ export class NewUserComponent implements OnInit {
 
   add(): void{
     if (this.form.valid) {
+      this.form.patchValue({dateOfBirth: this.form.controls['dateOfBirth'].value.toString() == '' ? "" : this.trimDate(this.form.controls['dateOfBirth'].value.toString()) as unknown as Date});
       this.userService.addUser(this.form.value as User)
         .subscribe(() => this.closeNewUser());
     }
@@ -68,7 +71,52 @@ export class NewUserComponent implements OnInit {
       });
     }
   }
+  private getMonth(dateInStr: string) {
+    switch(dateInStr.substr(4,3)) {
+      case "Jan": {
+        return "01";
+      }
+      case "Feb": {
+        return "02";
+      }
+      case "Mar": {
+        return "03";
+      }
+      case "Apr": {
+        return "04";
+      }
+      case "May": {
+        return "05";
+      }
+      case "Jun": {
+        return "06";
+      }
+      case "Jul": {
+        return "07";
+      }
+      case "Aug": {
+        return "08";
+      }
+      case "Sep": {
+        return "09";
+      }
+      case "Oct": {
+        return "10";
+      }
+      case "Nov": {
+        return "11";
+      }
 
+      default: {
+        return '12'
+      }
+    }
+  }
+  private trimDate(dateInStr: string) {
+    let okDate: string;
+    okDate = this.getMonth(dateInStr) + '/' + dateInStr.substr(8, 2) + '/' + dateInStr.substr(11,4)
+    return okDate;
+  }
   closeNewUser(): void {
     this.location.back();
   }
@@ -86,11 +134,17 @@ export class NewUserComponent implements OnInit {
       .subscribe(gen => this.genderStateOptions = gen);
   }
 
-  private getNationalityFormGroup(nationality: NationalityList): FormGroup {
+
+  private getNationalityFormGroup(nationalityData: NationalityList): FormGroup {
     return this.formBuilder.group({
-    name: [nationality.name]
+    name: [nationalityData.name]
     });
   }
 
+  newNationality(nat: string): void{
+    this.natId = this.nationalityFormArray.length;
+    this.nationalityFormArray.push(this.getNationalityFormGroup({name: nat}));
+
+  }
 
 }

@@ -7,7 +7,7 @@ export interface User {
   country?: string;
   registered?: boolean;
   gender?: 'Female' | 'Male' ;
-  dateOfBirth?: any[];
+  dateOfBirth?: any;
   number?: number;
   status?: 'Done' |'New'| 'In process';
 }
