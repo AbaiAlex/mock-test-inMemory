@@ -20,7 +20,7 @@ export class NewUserComponent implements OnInit {
   selectedCountry: CountryList;
   countries: CountryList[] = [];
   nationalities: NationalityList[] = [];
-  selectedNationalityes: NationalityList []= [];
+  //selectedNationalityes: NationalityList []= [];
   form: FormGroup;
   genderStateOptions: GenderList[] = [];
   nationalityFormArray: FormArray;
@@ -135,7 +135,7 @@ export class NewUserComponent implements OnInit {
   }
 
 
-  private getNationalityFormGroup(nationalityData: NationalityList): FormGroup {
+  /*private getNationalityFormGroup(nationalityData: NationalityList): FormGroup {
     return this.formBuilder.group({
     name: [nationalityData.name]
     });
@@ -146,5 +146,5 @@ export class NewUserComponent implements OnInit {
     this.nationalityFormArray.push(this.getNationalityFormGroup({name: nat}));
 
   }
-
+*/
 }

@@ -17,39 +17,22 @@ interface Country {
   providers: [ConfirmationService]
 })
 export class UserEditorComponent implements OnInit{
-  user: User;
   selectedCountry: Country ;
   countries: Country[];
   form: FormGroup;
   genderStateOptions: any[];
   selectedStatus: any;
   userStatus: any[] = [{name: 'Done'}, {name: 'New' }, {name: 'In process'}];
-  private dateValue: Date;
-  userBDate:  Date;
 
-  constructor(private userService: UserService, private formBuilder: FormBuilder,  private location: Location, private confirmationService: ConfirmationService, private router: ActivatedRoute) {
 
-    this.genderStateOptions = [{label: 'Female', value: 'Female'}, {label: 'Male', value: 'Male'}];
-    this.countries = [
-      {name: 'Australia'},
-      {name: 'Brazil'},
-      {name: 'China'},
-      {name: 'Egypt'},
-      {name: 'France'},
-      {name: 'Germany'},
-      {name: 'India'},
-      {name: 'Japan'},
-      {name: 'Spain'},
-      {name: 'United States'}
-    ];
 
-  }
+  constructor(private userService: UserService, private formBuilder: FormBuilder,  private location: Location, private confirmationService: ConfirmationService, private router: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.reactiveFormBiulder();
     this.getUser();
     this.getCountries();
-
+    this.getGenders();
   }
 
 
@@ -58,7 +41,7 @@ export class UserEditorComponent implements OnInit{
       id: [null],
       firstName: [null, RxwebValidators.required()],
       lastName: [null, RxwebValidators.required()],
-      nationality: [null, RxwebValidators.required()],
+      nationality: [null],
       momsName: [null, RxwebValidators.required()],
       country: [null],
       registered: [],
@@ -176,9 +159,14 @@ export class UserEditorComponent implements OnInit{
     okDate = this.getMonth(dateInStr) + '/' + dateInStr.substr(8, 2) + '/' + dateInStr.substr(11,4)
     return okDate;
   }
+
   getCountries(): void {
     this.userService.getCountries()
       .subscribe(countries => this.countries = countries);
   }
 
+  getGenders(): void {
+    this.userService.getGenderList()
+      .subscribe(gen => this.genderStateOptions = gen);
+  }
 }
