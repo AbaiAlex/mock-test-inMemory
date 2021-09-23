@@ -49,7 +49,7 @@ export class NewUserComponent implements OnInit {
       status: [null]
     });
   }
-
+  /**Functionality**/
   add(): void{
     if (this.form.valid) {
       this.form.patchValue({dateOfBirth: this.form.controls['dateOfBirth'].value.toString() == '' ? "" : this.trimDate(this.form.controls['dateOfBirth'].value.toString()) as unknown as Date});
@@ -57,6 +57,12 @@ export class NewUserComponent implements OnInit {
         .subscribe(() => this.closeNewUser());
     }
   }
+
+  closeNewUser(): void {
+    this.location.back();
+  }
+
+  /**Pop up**/
   confirm(): void {
     if (this.form.valid){
       this.confirmationService.confirm({
@@ -71,6 +77,8 @@ export class NewUserComponent implements OnInit {
       });
     }
   }
+
+  /**Date formatting**/
   private getMonth(dateInStr: string) {
     switch(dateInStr.substr(4,3)) {
       case "Jan": {
@@ -117,10 +125,8 @@ export class NewUserComponent implements OnInit {
     okDate = this.getMonth(dateInStr) + '/' + dateInStr.substr(8, 2) + '/' + dateInStr.substr(11,4)
     return okDate;
   }
-  closeNewUser(): void {
-    this.location.back();
-  }
 
+  /**Get data from in memory**/
   getCountries(): void {
     this.userService.getCountries()
       .subscribe(countries => this.countries = countries);

@@ -12,18 +12,20 @@ import {ConfirmationService} from 'primeng/api';
 })
 export class DashboardComponent implements OnInit {
   users: User[] = [];
+  userNationalities: string[];
   filteredUsers: User[];
   selectedUser: User;
   countries: CountryList[] = [];
   selectedCountry: CountryList;
   nationalities: NationalityList[] = [];
   genderStateOptions: GenderList[] = [];
-  slelectedGender: GenderList;
+  selectedGender: GenderList;
   statusStateOptions: StatusList[] = [];
   selectedState: StatusList;
   selectedRegisteredState = null;
   checked: boolean = false;
-  selectedBirthDay: any;
+  selectedBirthDay: any =null;
+  displayWarning: boolean;
   constructor(private userService: UserService, private router: Router, private confirmationService: ConfirmationService) {
   }
 
@@ -35,13 +37,7 @@ export class DashboardComponent implements OnInit {
     this.getStatus();
   }
 
-  getUsers(): void {
-    this.userService.getUsers()
-      .subscribe(users => {this.users = users;
-                           this.filteredUsers = users;
-      });
-
-  }
+  /**Functionality**/
 
   createNewUser(): void{
     this.router.navigateByUrl('newUser').then();
@@ -51,6 +47,8 @@ export class DashboardComponent implements OnInit {
   editUser(): void {
     if (this.selectedUser){
       this.router.navigateByUrl('detail/' + this.selectedUser.id).then();
+    }else{
+      this.displayWarning=true;
     }
   }
 
@@ -82,7 +80,7 @@ export class DashboardComponent implements OnInit {
     this.filteredUsers = this.users;
     this.filteredUsers = this.filteredUsers.filter(h => h.firstName.toLowerCase().indexOf(FName.toLowerCase()) !== -1);
     this.filteredUsers = this.filteredUsers.filter(h => h.lastName.toLowerCase().indexOf(LName.toLowerCase()) !== -1);
-    //this.filteredUsers = this.filteredUsers.filter(h => h.nationality.filter(h => h.name.toLowerCase().indexOf(Nationality.toLowerCase())!== -1) );
+    /*this.filteredUsers = this.filteredUsers.filter(h => h.nationality.filter(h => h.name.toString().toLowerCase().indexOf(Nationality.toLowerCase()) !==1 ));*/
     this.filteredUsers = this.filteredUsers.filter(h => h.momsName.toLowerCase().indexOf(MomName.toLowerCase()) !== -1);
     this.filteredUsers = this.filteredUsers.filter(h => String(h.number).indexOf(Numb) !== -1);
     if (Country) {
@@ -97,19 +95,17 @@ export class DashboardComponent implements OnInit {
     if (Registered !== null) {
       this.filteredUsers = this.filteredUsers.filter(h => String(h.registered) === String(Registered));
     }
-    if(BirthDay!==null){
+    if(BirthDay !== null){
       BirthDay = this.selectedBirthDay.toString() == '' ? "" : this.trimDate(this.selectedBirthDay.toString());
       this.filteredUsers = this.filteredUsers.filter(h => h.dateOfBirth === BirthDay);
 
     }
 
-
-
-
-
   }
-  private getMonth(dateInStr: string) {
-    switch(dateInStr.substr(4,3)) {
+
+  /**Date formatting**/
+  private getMonth(dateInStr: string){
+    switch(dateInStr.substr(4,3)){
       case "Jan": {
         return "01";
       }
@@ -153,6 +149,14 @@ export class DashboardComponent implements OnInit {
     let okDate: string;
     okDate = this.getMonth(dateInStr) + '/' + dateInStr.substr(8, 2) + '/' + dateInStr.substr(11,4)
     return okDate;
+  }
+  /**Get data from in memory**/
+  getUsers(): void {
+    this.userService.getUsers()
+      .subscribe(users => {this.users = users;
+        this.filteredUsers = users;
+      });
+
   }
   getCountries(): void {
     this.userService.getCountries()

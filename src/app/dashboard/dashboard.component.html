@@ -6,27 +6,35 @@
   </h1>
     <div class="p-col-12 Toolbar">
           <p-button label="New" icon="pi pi-plus" (click)="createNewUser()"></p-button>
-          <p-button label="Edit" icon="pi pi-pencil" (click)="editUser()" ></p-button>
+          <!--p-button label="Edit" icon="pi pi-pencil" (click)="editUser()" ></p-button-->
+      <p-button (click)="editUser()" icon="pi pi-pencil" label="Edit"></p-button>
+      <p-dialog header="Please select a User!" [(visible)]="displayWarning" [modal]="true" [style]="{width: '50vw'}"
+                [draggable]="false" [resizable]="false">
+        <p class="p-m-0">Click on the User's line you want to edit.</p>
+        <ng-template pTemplate="footer">
+          <p-button icon="pi pi-check" (click)="displayWarning=false" label="Ok" styleClass="p-button-text"></p-button>
+        </ng-template>
+      </p-dialog>
           <p-button  icon="pi pi-trash" label="Delete" (click)="delete()"></p-button>
     </div>
 <div class="Search">
     <div class="p-col-12">
-      <input class="p-mr-2 p-d-inline" id="fname"  type="text" placeholder="First name" pInputText #userFName />
-      <input class="p-mr-2 p-d-inline" id="lname"  type="text" placeholder="Last name" pInputText #userLName />
-      <input class="p-mr-2 p-d-inline"  id="nationality"  type="text" placeholder="Nationality" pInputText #userNat />
-      <input class="p-mr-2 p-d-inline"  id="momname"  type="text" placeholder="Mom's name" pInputText #userMomName />
+      <input class="p-mr-2 " id="fname"  type="text" placeholder="First name" pInputText #userFName />
+      <input class="p-mr-2 " id="lname"  type="text" placeholder="Last name" pInputText #userLName />
+      <input class="p-mr-2 "  id="nationality"  type="text" placeholder="Nationality" pInputText #userNat />
+      <input class="p-mr-2"  id="momname"  type="text" placeholder="Mom's name" pInputText #userMomName />
       <!--input class="p-mr-2 p-d-inline" id="BD"  type="text" placeholder="Birth day" pInputText #userBD /-->
-      <p-calendar class="p-mr-2 p-d-inline" [(ngModel)]="selectedBirthDay" #userBD></p-calendar>
-      <input class="p-mr-2 "  id="number"  type="text" placeholder="Number" pInputText #userNumber />
+      <p-calendar class="p-mr-2" [(ngModel)]="selectedBirthDay" #userBD></p-calendar>
+      <input class="p-mr-2"  id="number"  type="text" placeholder="Number" pInputText #userNumber />
     </div>
       <div class="p-col-12">
-      <p-dropdown class="p-mr-2 p-d-inline" [options]="statusStateOptions" [(ngModel)]="selectedState" placeholder="Status" optionLabel="status" [showClear]="true" ></p-dropdown>
-      <p-dropdown class="p-mr-2 p-d-inline" [options]="genderStateOptions" [(ngModel)]="slelectedGender" placeholder="Gender" optionLabel="label" [showClear]="true" ></p-dropdown>
-      <p-dropdown class="p-mr-2 p-d-inline" [options]="countries" [(ngModel)]="selectedCountry" placeholder="Country" optionLabel="name" [showClear]="true" ></p-dropdown>
-      <p-triStateCheckbox class="p-col-2" [(ngModel)]="selectedRegisteredState"></p-triStateCheckbox>
+      <p-dropdown class="p-mr-2" [options]="statusStateOptions" [(ngModel)]="selectedState" placeholder="Status" optionLabel="status" [showClear]="true" ></p-dropdown>
+      <p-dropdown class="p-mr-2" [options]="genderStateOptions" [(ngModel)]="selectedGender" placeholder="Gender" optionLabel="label" [showClear]="true" ></p-dropdown>
+      <p-dropdown class="p-mr-2" [options]="countries" [(ngModel)]="selectedCountry" placeholder="Country" optionLabel="name" [showClear]="true" ></p-dropdown>
+      <p-triStateCheckbox class="p-mr-2" [(ngModel)]="selectedRegisteredState"></p-triStateCheckbox>
     </div>
   <div class="p-col-12">
-      <p-button label="Search" icon="pi pi-search" (click)="search(userFName.value, userLName.value, userMomName.value, userNumber.value, selectedCountry, slelectedGender, selectedState,selectedRegisteredState, userNat.value, userBD.value )"></p-button>
+      <p-button label="Search" icon="pi pi-search" (click)="search(userFName.value, userLName.value, userMomName.value, userNumber.value, selectedCountry, selectedGender, selectedState,selectedRegisteredState, userNat.value, userBD.value )"></p-button>
     </div>
 </div>
     <div class="card p-col-12 ">

@@ -27,6 +27,7 @@ import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-b
 import {MultiSelectModule} from 'primeng/multiselect';
 import {AutoCompleteModule} from 'primeng/autocomplete';
 import {TriStateCheckboxModule} from 'primeng/tristatecheckbox';
+import {DialogModule} from 'primeng/dialog';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import {TriStateCheckboxModule} from 'primeng/tristatecheckbox';
   ],
   imports: [
     BrowserModule,
+    DialogModule,
     CheckboxModule,
     ConfirmDialogModule,
     BrowserAnimationsModule,

@@ -29,14 +29,13 @@ export class UserEditorComponent implements OnInit{
   constructor(private userService: UserService, private formBuilder: FormBuilder,  private location: Location, private confirmationService: ConfirmationService, private router: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.reactiveFormBiulder();
+    this.reactiveFormBuilder();
     this.getUser();
     this.getCountries();
     this.getGenders();
   }
 
-
-  reactiveFormBiulder(): void{
+  reactiveFormBuilder(): void{
     this.form = this.formBuilder.group({
       id: [null],
       firstName: [null, RxwebValidators.required()],
@@ -52,14 +51,9 @@ export class UserEditorComponent implements OnInit{
     });
   }
 
-  add(): void{
-    if (this.form.valid) {
-      this.userService.addUser(this.form.value as User)
-        .subscribe();
-    }
-  }
 
-  confirm(): void {
+/**Pop up**/
+  /*editUserConfrimation(): void {
     this.confirmationService.confirm({
       message: 'Are you sure that you want to edit this user?',
       icon: 'pi pi-exclamation-triangle',
@@ -71,30 +65,33 @@ export class UserEditorComponent implements OnInit{
       reject: () => {
       }
     });
-  }
+  }*/
 
-  confirm2(): void {
-    this.confirmationService.confirm({
-      message: 'Do you want to leave without save?',
-      header: 'Leave Confirmation',
-      icon: 'pi pi-info-circle',
-      accept: () => {
-        this.closeEditer();
-      },
-      reject: () => {
-      }
-    });
-  }
-  getUser(): void {
-    let id;
-    id = +this.router.snapshot.paramMap.get('id');
-    this.userService.getUser(id)
-      .subscribe(user => {
-        this.form.patchValue(user);
-        this.selectedStatus = user.status;
+  editUserLeave(): void {
+    if(this.form.dirty){
+      this.confirmationService.confirm({
+        message: 'Do you want to leave without save?',
+        header: 'Leave Confirmation',
+        icon: 'pi pi-info-circle',
+        accept: () => {
+          this.closeEditer();
+        },
+        reject: () => {
+        }
       });
+    }else {
+      this.closeEditer();
+    }
+
   }
 
+/**Functionality**/
+add(): void{
+  if (this.form.valid) {
+    this.userService.addUser(this.form.value as User)
+      .subscribe();
+  }
+}
   closeEditer(): void {
     this.location.back();
   }
@@ -112,7 +109,7 @@ export class UserEditorComponent implements OnInit{
   private isDateChanged() {
     return this.form.controls["dateOfBirth"].dirty;
   }
-
+  /**Date formatting**/
   private getMonth(dateInStr: string) {
     switch(dateInStr.substr(4,3)) {
       case "Jan": {
@@ -160,6 +157,16 @@ export class UserEditorComponent implements OnInit{
     return okDate;
   }
 
+  /**Get data from in memory**/
+  getUser(): void {
+    let id;
+    id = +this.router.snapshot.paramMap.get('id');
+    this.userService.getUser(id)
+      .subscribe(user => {
+        this.form.patchValue(user);
+        this.selectedStatus = user.status;
+      });
+  }
   getCountries(): void {
     this.userService.getCountries()
       .subscribe(countries => this.countries = countries);
